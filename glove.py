@@ -52,3 +52,10 @@ class Glove:
 
 	def ResetLibrary(self):
 		pass
+
+	# def key(self,key_index):
+	# 	self.loaded_key = key_index
+	# 	self.loaded_key_int = self.key_int(key_index)
+	# 	self.loaded_key_name = self.key_by_name(key_index)
+	# 	self.last_read_byte = 'K'
+	# 	pass			

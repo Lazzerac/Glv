@@ -17,6 +17,7 @@ for device in locations:
 glove = glove.Glove('01')
 last_read_byte = 0
 output_array = glove.key_array
+hold = False
 while True:
 	text = ser.read(size=3)
 	#print(text)
@@ -24,20 +25,27 @@ while True:
 	 	value = int(float(text))
 	else:
 	 	value = 0
-
-	if last_read_byte > 1 and last_read_byte < 10 and value == 1:
-		last_read_byte = 1
+	#print(value)
+	
+	# if last_read_byte > 1 and last_read_byte < 10 and value == 1:
+	# 	last_read_byte = 1
+	# 	pass
+	# if value == last_read_byte + 10:
+	# 	print('LRB1: ' + str(last_read_byte)+" V: "+ str(value))
+	# 	last_read_byte = value
+	# 	pass
+	# if value < 10 and last_read_byte > 10:
+	# 	print('LRB2: '+ str(last_read_byte) +" V: "+ str(value))
+	# 	last_read_byte = value
+	# 	pass
+	
+	if last_read_byte > 10 and value < 10 and hold == True:
+		print('LRB3: '+ str(last_read_byte)+" V: "+ str(value))
 		pass
-	elif value > 10:
-	 	finger = glove.GetFingerBySerialIndex(str(value))
-	 	
-	 	glove.LoadLibraryByFingerByFile(finger)
-	 	output_array = glove.key_array
-	 	index = value;
-	 	last_read_byte = value;
-	 	#glove.loadLibrary(LibrarySet[index])
-	 	#print('2')
-	elif value < 10:
+
+	#Output single tap
+	elif value < 10 and value > 0 and hold == False:
+		print('LRB4: '+ str(last_read_byte) +" V: "+ str(value))
 		#print(glove.index_array)
 		ser_index = glove.index_array.index(str(value))
 		#print(ser_index)
@@ -46,8 +54,23 @@ while True:
 	 	output = output_array[output_array.index(finger)+8]
 	 	print(output)
 	 	last_read_byte = value
-	 	#print('3')
-	else:
-	 	#print('4')
+	
+	#Holding; last:hold current: hold 	
+	elif value > 10 and value == last_read_byte:
+		print('LRB5: '+ str(last_read_byte) +" V: "+ str(value))
+		finger = glove.GetFingerBySerialIndex(str(value))
+	 	glove.LoadLibraryByFingerByFile(finger)
+	 	output_array = glove.key_array
+	 	index = value;
+	 	last_read_byte = value;
+	 	hold = True
+	 	#glove.loadLibrary(LibrarySet[index])
+	 	#print('2')
+	 	pass
+
+	elif value > 10 and last_read_byte < 10 :
+		last_read_byte = value
+		print('LRB6: '+ str(last_read_byte)+" V: "+ str(value))
+		hold = True
 		pass
-		
+	

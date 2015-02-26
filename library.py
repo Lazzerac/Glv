@@ -5,20 +5,21 @@ class Library(object):
 	def __init__(self, name):
 		self.name = name
 		#[Fingers; Serial Equivilent]
-		self.index_array 	= [ 'P1', 'P2', 'R1', 'R2', 'M1', 'M2', 'I1', 'I2',
-								'3', '1', '2', '4', '8', '5', '6', '7']
-		self.string_array 	= [ 'P1', 'P2', 'R1', 'R2', 'M1', 'M2', 'I1', 'I2',
-								'','','','','','','','']	
-		self.library_array 	= [ 'P1', 'P2', 'R1', 'R2', 'M1', 'M2', 'I1', 'I2',
-								'','','','','','','','']			
-		self.file_array	 	= [ 'P1', 'P2', 'R1', 'R2', 'M1', 'M2', 'I1', 'I2',
-								'','','','','','','','']			 
+		self.index_array 		= [ 'P1', 'P2', 'R1', 'R2', 'M1', 'M2', 'I1', 'I2',
+									'3', '1', '2', '4', '8', '5', '6', '7']							
+		self.string_array 		= [ 'P1', 'P2', 'R1', 'R2', 'M1', 'M2', 'I1', 'I2',
+									'','','','','','','','']	
+		self.library_array 		= [ 'P1', 'P2', 'R1', 'R2', 'M1', 'M2', 'I1', 'I2',
+									'','','','','','','','']			
+		self.file_array	 		= [ 'P1', 'P2', 'R1', 'R2', 'M1', 'M2', 'I1', 'I2',
+									'','','','','','','','']			 
 
 
 	def LoadFromFile(self, keyfile):
 		f = open(keyfile,'r') 
 		for line in f.readlines():
 			self.AssignKeyByDelimitedLine(line)
+		f.close()
 
 	def LoadFromName(self):
 		pass
