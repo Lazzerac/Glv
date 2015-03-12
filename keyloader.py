@@ -25,7 +25,7 @@ class Keyloader(object):
 		return named_key
 
 	def release(self, key_index):
-		if self.last_read_byte == 'H' and self.increment >= 3:
+		if self.last_read_byte == 'H' and self.increment > 3:
 			print(self.loaded_key_name)
 			self.glove.LoadLibraryByFingerByFile(self.loaded_key_name)
 			print(self.glove.lib.name)
@@ -35,7 +35,7 @@ class Keyloader(object):
 
 			self.last_read_byte = 'R'
 			pass
-		if self.last_read_byte == 'H' and self.increment == 1 or self.increment == 2:
+		if self.last_read_byte == 'H' and self.increment == 1 or self.increment <= 3:
 			output_index = self.glove.key_array.index(self.loaded_key_name)+8
 			output = self.glove.key_array[output_index]
 			print(output)
@@ -65,9 +65,11 @@ class Keyloader(object):
 			pass
 
 	def hold(self,key_index):
-		self.hold_flag = True
+		if self.increment > 3 and self.hold_flag == False:
+			print("Holding.... \nNew Keyboard:")	
+			self.hold_flag = True
 		self.increment += 1
-		self.last_read_byte = 'H'
+		self.last_read_byte = 'H'	
 		pass 
 	def passing(self,key_index):
 		pass
@@ -80,12 +82,12 @@ class Keyloader(object):
 						'5':self.key,
 						'6':self.key,
 						'7':self.key,
-						'8':self.key,
+						'\x80':self.key,
 						'R':self.release,
 						'H':self.hold,
 						'O':self.on}
 		self.index_array = [ 'P1', 'P2', 'R1', 'R2', 'M1', 'M2', 'I1', 'I2',
-								'3', '1', '2', '4', '8', '5', '6', '7']
+								'3', '1', '2', '4', '8', '5', '8', '7']
 		self.hold_flag = False
 		self.glove = glove.Glove('11')
 		self.on_increment = 0
