@@ -1,6 +1,7 @@
 import serial
 import string
 import math
+import struct
 
 from time import time
 
@@ -19,18 +20,14 @@ for device in locations:
         print "Failed to connect on",device     
 
 f = open("Serial"+str(time())+".txt", 'w')
+i = 0 
 
-roll=0
-pitch=0
-yaw=0
 while 1:
-    line = ser.readline()
-    #print line
-    if line == '' or line == '\n' or line == '\r' or line == '\n\r' or line == '\r\n':
-    	pass
-    else:
-	    f.write(line)                   # Write to the output log 
-	    if line.find("!M:") != -1:
-	    	print line[3]
+    s_line = ser.read()
+    if struct.unpack('<c',s_line)[0] == '!':
+        s_line2 = ser.read(size=8)
+        s2 = struct.unpack('hhhh',s_line2)
+        if s2[3] != 8:
+            print s2
 ser.close
 f.close

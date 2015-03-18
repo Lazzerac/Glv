@@ -28,6 +28,8 @@ with MinIMU-9-Arduino-AHRS. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
+int p,y,r;
+byte buff[10];
 void printdata(void)
 {    
       Serial.print("!");
@@ -83,6 +85,47 @@ void printdata(void)
       Serial.println();    
       
 }
+
+void printdatabinary(void)
+{
+      p = int(pitch);
+      y = int(yaw);
+      r = int(roll);
+      buff[0] = B00100001;
+      buff[1] = lowByte(p);
+      buff[2] = highByte(p);
+      buff[3] = lowByte(y);
+      buff[4] = highByte(y);
+      buff[5] = lowByte(r);
+      buff[6] = highByte(r);
+      buff[7] = lowByte(sender);
+      buff[8] = highByte(sender);      
+//      Serial.write(sender);
+      buff[9] = B00100100;
+      Serial.write(buff, 10);
+      Serial.flush();
+      //Serial.print(buff);
+}
+
+//void printdatabinary(void)
+//{
+//      p = int(pitch);
+//      y = int(yaw);
+//      r = int(roll);
+//      Serial.write("!");
+//      Serial.write(p >> 8);
+//      Serial.write(p & 0xFF);
+//      Serial.write(y >> 8);
+//      Serial.write(y & 0xFF);
+//      Serial.write(r >> 8);
+//      Serial.write(r & 0xFF);
+//      Serial.write(sender >> 8);
+//      Serial.write(sender & 0xFF);      
+////      Serial.write(sender);
+//      Serial.write("$");
+//      Serial.flush();
+//
+//}
 
 long convert_to_dec(float x)
 {

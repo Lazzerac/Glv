@@ -89,7 +89,9 @@ int SENSOR_SIGN[9] = {1,1,1,-1,-1,-1,1,1,1}; //Correct directions x,y,z - gyro, 
 #define PRINT_ANALOGS 0 //Will print the analog raw data
 #define PRINT_EULER 1   //Will print the Euler angles Roll, Pitch and Yaw
 
-#define STATUS_LED 13 
+#define STATUS_LED 13
+
+#define Pi 3.1415926535
 
 float G_Dt=0.02;    // Integration time (DCM algorithm)  We will run the integration loop at 50Hz if possible
 
@@ -138,8 +140,8 @@ Button P1, R1, M1, I1;
 Button buttons_set[4]={P1, R1, M1, I1};
 
 int button_input[4] = {4,6,8,10};
-char button_on[4] = {'a','b','c','d'};
-char button_press[4] = {'1','2','3','4'};
+byte button_press[8] = {B00000001,B00000010,B00000011,B00000100,B00000101,B00000110,B00000111,B00001000};
+byte sender;
 int sendflag = 0;
 int onflag = 0;
 
@@ -219,13 +221,13 @@ void loop() //Main Loop
     for(int i = 0; i <= button_quantity; i++){
     switch(buttons_set[i].check()){
       case Pressed:
-        Serial.print("!M:");
-      	Serial.print(button_press[i]);
+      	sender = button_press[i];
         sendflag = 1;
         break;
       case ON:
         if (onflag == 0) {        
-            Serial.print("!M:O");
+            // Serial.print("!M:O");
+            sender = button_press[4];
             sendflag = 1;
             onflag = 1;
             break;
@@ -233,13 +235,15 @@ void loop() //Main Loop
           break;
         }
       case Hold:
-        Serial.print("!M:H");
+        // Serial.print("!M:H");
+        sender = button_press[5];
         sendflag = 1;
         break;
       case OFF:
       break;
       case Released:
-      	Serial.print("!M:R");
+      	// Serial.print("!M:R");
+        sender = button_press[6];
         sendflag = 1;
         onflag = 0;
         break;
@@ -248,10 +252,10 @@ void loop() //Main Loop
       if (sendflag == 0) {
         sendflag = 0;
         /*Serial.print("!M:F");  */      
+        sender = button_press[7];
       } else {
         sendflag = 0;
       }
-    Serial.println();
   if((millis()-timer)>=20)  // Main loop runs at 50Hz
   {
     counter++;
@@ -278,9 +282,10 @@ void loop() //Main Loop
     Matrix_update(); 
     Normalize();
     Drift_correction();
-    Euler_angles();
+    Euler_angles_binary();
     // ***
    
-    printdata();
+    
   }
+  printdatabinary();
 }
