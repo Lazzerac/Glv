@@ -91,7 +91,7 @@ int SENSOR_SIGN[9] = {1,1,1,-1,-1,-1,1,1,1}; //Correct directions x,y,z - gyro, 
 
 #define STATUS_LED 13
 
-#define Pi 3.1415926535
+#define Pi 3.14
 
 float G_Dt=0.02;    // Integration time (DCM algorithm)  We will run the integration loop at 50Hz if possible
 
@@ -126,6 +126,9 @@ float Omega[3]= {0,0,0};
 float roll;
 float pitch;
 float yaw;
+float pre_roll;
+float pre_yaw;
+float pre_pitch;
 
 float errorRollPitch[3]= {0,0,0}; 
 float errorYaw[3]= {0,0,0};
@@ -282,10 +285,10 @@ void loop() //Main Loop
     Matrix_update(); 
     Normalize();
     Drift_correction();
-    Euler_angles_binary();
+    Euler_angles();
     // ***
    
     
   }
-  printdatabinary();
+  Print_Data_Binary();
 }

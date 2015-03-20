@@ -1,4 +1,4 @@
-import keyloader
+#import keyloader
 import serial
 import time
 
@@ -14,7 +14,7 @@ for device in locations:
     except:    
         print "Failed to connect on",device     
   
-kl = keyloader.Keyloader()
+#kl = keyloader.Keyloader()
 
 while True:
 	text = ser.read()
@@ -26,5 +26,5 @@ while True:
 		pass
 	else:
 		#print(text)
-		kl.options[text](text)
-	pass
+		#kl.options[text](text)
+		pass

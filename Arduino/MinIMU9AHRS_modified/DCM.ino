@@ -162,9 +162,20 @@ void Euler_angles(void)
   yaw = atan2(DCM_Matrix[1][0],DCM_Matrix[0][0]);
 }
 
-void Euler_angles_binary(void)
-{
-  pitch = int((2^15)*(-asin(DCM_Matrix[2][0])+Pi*.5)/Pi);
-  roll = int((2^15)*(atan2(DCM_Matrix[2][1],DCM_Matrix[2][2])+Pi*.5)/Pi);
-  yaw = int((2^15)*(atan2(DCM_Matrix[1][0],DCM_Matrix[0][0])+Pi*.5)/Pi);
-}
+//void Euler_angles_binary(void)
+//{
+//  pre_roll = atan2(DCM_Matrix[2][1],DCM_Matrix[2][2]);
+//  pre_yaw = atan2(DCM_Matrix[1][0],DCM_Matrix[0][0]);
+//  pitch = (-asin(DCM_Matrix[2][0]) + Pi*.5)*100;
+//    
+//  if (pre_roll < 0 ) {
+//    roll = (atan2(DCM_Matrix[2][1],DCM_Matrix[2][2])+Pi)*100;
+//  } else {
+//    roll = atan2(DCM_Matrix[2][1],DCM_Matrix[2][2])*100;
+//  }
+//  if (pre_yaw < 0 ) {
+//    yaw = (atan2(DCM_Matrix[1][0],DCM_Matrix[0][0])+Pi)*100;
+//  } else {
+//    yaw = atan2(DCM_Matrix[1][0],DCM_Matrix[0][0])*100;
+//  }
+//}
